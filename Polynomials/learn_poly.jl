@@ -35,9 +35,9 @@ end
 
 n_samples =10^5
 q = 2
-n_qubits =  50
+n_qubits =  20
 n_time_steps =  10 #Has to be atleast 2
-beta =  1
+beta =  2
 Jz =  -1
 Jx = 1
 J_spatial =  -beta*Jz/n_time_steps

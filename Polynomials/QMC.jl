@@ -61,16 +61,14 @@ function world_line_MCMC(n_samples, n_qubits, n_time_steps, J_spatial, J_tempora
     for m in ProgressBar(1:burnin)
         for i in 1:n_qubits
 
-	if 1<i<n_qubits
-            h_list = J_spatial*(state[i+1,:] + state[i-1,:])
-	elseif i == 1
-            h_list = J_spatial*(state[i+1,:] )
-	elseif i == n_qubits
-            h_list = J_spatial*(state[i-1,:] )
-        end
+	          if 1<i<n_qubits
+                h_list = J_spatial*(state[i+1,:] + state[i-1,:])
+	          elseif i == 1
+                h_list = J_spatial*(state[i+1,:] )
+	          elseif i == n_qubits
+                h_list = J_spatial*(state[i-1,:] )
+            end
             state[i,:] =  Exact_1D_Ising_sampler(n_time_steps, 1, J_list, h_list , population)[1]
-
-
         end
 
     end
@@ -78,15 +76,14 @@ function world_line_MCMC(n_samples, n_qubits, n_time_steps, J_spatial, J_tempora
      for m in ProgressBar(1:n_samples)
         for i in 1:n_qubits
 
-	if 1<i<n_qubits
-            h_list = J_spatial*(state[i+1,:] + state[i-1,:])
-	elseif i == 1
-            h_list = J_spatial*(state[i+1,:] )
-	elseif i == n_qubits
-            h_list = J_spatial*(state[i-1,:] )
-        end
+	          if 1<i<n_qubits
+                h_list = J_spatial*(state[i+1,:] + state[i-1,:])
+	          elseif i == 1
+                h_list = J_spatial*(state[i+1,:] )
+	          elseif i == n_qubits
+                h_list = J_spatial*(state[i-1,:] )
+            end
             state[i,:] =  Exact_1D_Ising_sampler(n_time_steps, 1, J_list, h_list, population )[1]
-
         end
         push!(state_list, copy(state))
     end
