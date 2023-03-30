@@ -35,7 +35,7 @@ end
 
 n_samples =10^5
 q = 2
-n_qubits =  20
+n_qubits =  50
 n_time_steps =  10 #Has to be atleast 2
 beta =  1
 Jz =  -1
@@ -46,45 +46,13 @@ J_temporal = -0.5*log(tanh(beta*Jx/n_time_steps))
 
 n =  n_qubits*n_time_steps
 
-Terms = Dict{}()
-
-
-
-M =  pth_order_tensor(2)
-
-
-for i in 1:n_qubits
-    for t in 1:n_time_steps-1
-        n1 =  cord2num(t,i)
-        n2 =  cord2num(t,i%n_qubits + 1 )
-        n3 =  cord2num(t+1, i)
-        Terms[ Tuple(sort!([n1,n2])) ] =  J_spatial*M
-        Terms[ Tuple(sort!([n1,n3])) ] =  J_temporal*M
-        
-    end
-end
-
-for i in 1:n_qubits
-    n1 =  cord2num(n_time_steps,i)
-    n2 =  cord2num(n_time_steps,i%n_qubits + 1)
-    n3 =  cord2num(1,i)
-    Terms[ Tuple(sort!([n1,n2])) ] =  J_spatial*M
-    Terms[ Tuple(sort!([n1,n3])) ] =  J_temporal*M
-end
-
-
-
-
-##Sampling from true model
-
-edge_list =  collect(keys(Terms))
 println(J_spatial,", " , J_temporal,", " ,beta*Jx/n_time_steps)
 s = world_line_MCMC(n_samples,n_qubits,n_time_steps,J_spatial,J_temporal,100000)
 samples = [a[:,10] for a in s] ##One slice is used for samples
 C =  countmap(samples)
 Corr_ZZ =  zeros(n_qubits)
 for l in 1:n_qubits
-    Corr_ZZ[l] = sum( s[10]*s[l] for s in samples)/n_samples
+    Corr_ZZ[l] = sum( s[1]*s[l] for s in samples)/n_samples
 end
 
 
@@ -98,7 +66,7 @@ S_new = GraphicalModelLearning.sample(FactorGraph(E), 4*10^6, Glauber(ones(n_qub
 ##Comparing ZZ values
 Corr_ZZ_poly =  zeros(n_qubits)
 for l in 1:n_qubits
-    Corr_ZZ_poly[l] = sum( v*s[10]*s[l] for (s,v) in S_new)/(4*10^6)
+    Corr_ZZ_poly[l] = sum( v*s[1]*s[l] for (s,v) in S_new)/(4*10^6)
 end
 
 
