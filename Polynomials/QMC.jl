@@ -2,7 +2,7 @@
 using IterTools:product
 using ProgressBars
 using GraphicalModelLearning
-using PyPlot, LinearAlgebra, StatsBase
+using LinearAlgebra, StatsBase, Plots
 ### Use glauber branch for Entropic GD  pkg> add GraphicalModelLearning#glauber
 
 

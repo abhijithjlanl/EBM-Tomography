@@ -1,4 +1,4 @@
-using GraphicalModelLearning
+using GraphicalModelLearning, LaTeXStrings
 include("QMC.jl")
 function dict_2_array(A,n)
     S = Int.(zeros(length(A),n+1))
@@ -15,19 +15,21 @@ function dict_2_array(A,n)
 end
 
 function ZZ_plot(Corr, Corr_learned, n; name = "NN")
+    #=
     matplotlib.style.use("default")
     PyPlot.rc("text", usetex = false)
     PyPlot.rc("font", family="serif", size = 5)
     PyPlot.rc("figure", figsize=(7/4, 7/5))
     PyPlot.rc("axes", linewidth=0.05, facecolor="w",edgecolor="grey")
-    xticks(1:4:n)
-    plot(1:n, Corr,   label="QMC",  "-*", markersize=1.0, linewidth=0.5)
-    plot(1:n, Corr_learned,"o",  label="Learned", markersize = 1.0,linewidth=0.5)
-    legend(title =  L"$\langle Z_{10} Z_j \rangle$")
-    xlabel("Site index(j)")
+    =#
+#    xticks(1:4:n)
+    plot(1:n, Corr,label="QMC", markersize=1.0, linewidth=0.5)
+    scatter!(1:n, Corr_learned,  label="Learned", markersize = 2.0,linewidth=0.5)
+   # legend(title =  L"$\langle Z_{10} Z_j \rangle$")
+    xlabel!("Site index(j)")
     #grid()
-    tight_layout()
-    savefig("two_site_QMC_" * name * ".pdf", dpi = 300)
+#    tight_layout()
+#    savefig("two_site_QMC_" * name * ".pdf", dpi = 300)
 
 end
 
@@ -57,7 +59,6 @@ end
 
 
 ##Learning EBM from samples
-
 
 S = dict_2_array(countmap(samples), n_qubits)
 E = learn( S, ISE(),EntropicDescent(1e4, 0.1, 30, 1e-8) )
