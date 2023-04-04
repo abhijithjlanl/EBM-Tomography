@@ -29,9 +29,9 @@ function exact_sampler(conditional_MPS, SITEINDS,q, n, n_samples)
     for t in ProgressBar(1:n_samples)
         samples[t,n] = wsample(1:q, real(Array(conditional_MPS[end][1], siteinds(conditional_MPS[end])[1])))
         for i in n-1:-1:1
-            V =  marginal_MPS[i][1]
+            V =  conditional_MPS[i][1]
             for j in 2: n-i+1
-                V *=  marginal_MPS[i][j]*state(SITEINDS[j+i-1], samples[t, j+i-1])
+                V *=  conditional_MPS[i][j]*state(SITEINDS[j+i-1], samples[t, j+i-1])
             end
 #            @show V
             samples[t, i] = wsample(1:q, real(Array(V, inds(V)... ))   )

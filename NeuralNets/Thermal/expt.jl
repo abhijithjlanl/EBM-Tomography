@@ -9,13 +9,15 @@ using ProgressBars
 
 nq = 30
 n_samples = 10^5
-g = 1.0
-samples = TIM_exact_gs_sampler(nq, n_samples)
-one_states, two_states =  TIM_exact_gs_two_body_states(nq; g =g)
+β = 1.0
+samples =  TIM_Thermal_exact_sampler(n_samples, nq, β, maxlinkdim = 40)
+one_states, two_states =  TIM_Thermal_twobody_states(nq, β)
 ZZ_exact = ZZ_basis_dict(two_states)
 XX_exact = XX_basis_dict(two_states)
 writedlm("samples.csv", samples)
 one_body, two_body = NN_learn_reduced_states(nq, n_samples; n_est_samples=10000)
+map!( psd_project, values(one_body))
+map!( psd_project, values(two_body))
 run(`rm samples.csv`)
 ZZ_learned = ZZ_basis_dict(two_body)
 XX_learned = XX_basis_dict(two_body)
