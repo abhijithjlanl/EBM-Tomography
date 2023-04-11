@@ -1,4 +1,5 @@
-# EBM-Tomography
+# Learning Energy-Based Representations of Quantum Many-Body States
+Code associated with https://arxiv.org/abs/2304.04058
 
 For julia packages activate the environment in EBM. First go to pkg mode by hitting ],
 
